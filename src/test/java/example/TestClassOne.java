@@ -27,7 +27,7 @@ public class TestClassOne {
     }
 
     @Test(groups = "group2")
-    public void testGroupTwoMethodTwo() {
+    public void testGroupTwoMethodOne() {
         System.out.println("Test group2 method 1");
     }
 
