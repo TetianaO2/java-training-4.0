@@ -1,6 +1,7 @@
 package example;
 
 import org.testng.annotations.DataProvider;
+import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
@@ -8,7 +9,7 @@ public class TestClassTwo {
 
     @Test
     @Parameters({"parameter1", "parameter2"})
-    public void acceptParameterFromXml(String parameter1, String parameter2) {
+    public void acceptParameterFromXml(@Optional("DefaultP1") String parameter1, @Optional("DefaultP2") String parameter2) {
         System.out.println("Parameters from testng.xml: Parameter1 " + parameter1 + ", Parameter2 " + parameter2);
     }
 
