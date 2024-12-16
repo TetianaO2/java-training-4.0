@@ -14,6 +14,7 @@ import org.testng.annotations.Test;
 
 import java.nio.file.Paths;
 
+import static io.appium.java_client.service.local.flags.GeneralServerFlag.BASEPATH;
 import static java.lang.System.getenv;
 
 public class SampleAppTest {
@@ -29,10 +30,13 @@ public class SampleAppTest {
         if (platform.equals("ANDROID")) {
             var options = new UiAutomator2Options()
                     .setPlatformName("Android")
-                    .setDeviceName("PUT_YOUR_DEVICE_NAME_HERE")
-                    .setApp(Paths.get(path).resolve("ApiDemos-debug.apk").toString());
+                    .setDeviceName("emulator-5554")
+                    .setApp(Paths.get(path).resolve("ApiDemos-debug.apk").toString())
+                    .setAppActivity(".view.TextFields");
 
-            server = AppiumDriverLocalService.buildService(new AppiumServiceBuilder().usingAnyFreePort());
+            server = AppiumDriverLocalService.buildService(new AppiumServiceBuilder()
+                    .usingAnyFreePort()
+                    .withArgument(BASEPATH, "/wd/hub"));
             server.start();
             driver = new AndroidDriver(server, options);
 
@@ -40,12 +44,17 @@ public class SampleAppTest {
         } else {
             var options = new XCUITestOptions()
                     .setPlatformName("iOS")
-                    .setPlatformVersion("PUT_YOUR_XCODE_VERSION_HERE")
-                    .setAutomationName("XCuiTest")
-                    .setDeviceName("PUT_YOUR_DEVICE_NAME_HERE")
-                    .setApp(Paths.get(path).resolve("TestApp.app.zip").toString());
-
-            server = AppiumDriverLocalService.buildService(new AppiumServiceBuilder().usingAnyFreePort());
+                    .setPlatformVersion("17.5")
+                    .setAutomationName("XCUiTest")
+                    .setDeviceName("iPhone 15 Pro Max")
+                    .setApp(Paths.get(path).resolve("TestApp.app.zip").toString())
+                    .setWdaStartupRetries(3)
+                    .setUseNewWDA(true)
+                    .setClearSystemFiles(true)
+                    .setWebDriverAgentUrl("http://localhost:8100");
+            server = AppiumDriverLocalService.buildService(new AppiumServiceBuilder()
+                    .usingAnyFreePort()
+                    .withArgument(BASEPATH, "/wd/hub"));
             server.start();
             driver = new IOSDriver(server, options);
         }
@@ -54,8 +63,10 @@ public class SampleAppTest {
     @Test
     public void textFieldTest() {
         // TODO initialise PageView and set "text" to its textField
-
+        PageView pView = new PageView(driver);
+        pView.setTextField("text");
         // TODO assert that textField equals to "text"
+        assert pView.getTextField().equals("text");
     }
 
     @AfterClass
