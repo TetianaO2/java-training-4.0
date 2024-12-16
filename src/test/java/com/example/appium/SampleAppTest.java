@@ -45,7 +45,7 @@ public class SampleAppTest {
             var options = new XCUITestOptions()
                     .setPlatformName("iOS")
                     .setPlatformVersion("17.5")
-                    .setAutomationName("XCUiTest")
+                    .setAutomationName("XCuiTest")
                     .setDeviceName("iPhone 15 Pro Max")
                     .setApp(Paths.get(path).resolve("TestApp.app.zip").toString())
                     .setWdaStartupRetries(3)
